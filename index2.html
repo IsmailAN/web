@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Layout 3 Bagian</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Bagian gambar statis (atas dan bawah) */
+    .static-image {
+      flex: 0 0 250px;
+      background: #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      box-sizing: border-box;
+      border-bottom: 2px solid #ccc;
+    }
+    /* Untuk gambar bawah, kasih border top aja */
+    .static-image.bottom {
+      border-bottom: none;
+      border-top: 2px solid #ccc;
+    }
+    .static-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Bagian tengah card container */
+    .card-container {
+        display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    background: white;
+    max-width: 800px;
+    margin: 0 auto; /* Ini biar container ketengah */
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        }
+    .card {
+      flex: 0 0 250px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 12px 12px 0 0;
+      display: block;
+    }
+    .card-body {
+      padding: 0.7rem;
+      text-align: center;
+    }
+    .card-body h3 {
+      margin: 0.3rem 0;
+      font-size: 1.1rem;
+    }
+    .card-body p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+    }
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .modal-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      max-width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-content img {
+      width: 100%;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+    .close-btn {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Gambar statis atas -->
+  <div class="static-image top">
+    <img src="1.jpg" alt="Gambar Statis Atas" />
+  </div>
+
+  <!-- Bagian card tengah -->
+  <div class="card-container">
+    <div class="card" onclick="openModal(1)">
+      <img src="2.jpg" alt="Card 1" />
+      <div class="card-body">
+        
+        <p>GAM merupakan singkatan dari Gerakan Aceh Merdeka. Ini adalah organisasi yang pernah melakukan pemberontakan bersenjata di Aceh dengan tujuan memisahkan diri dari Indonesia</p>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(2)">
+      <img src="4.jpg" alt="Card 2" />
+      <div class="card-body">
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus accusamus cupiditate veniam laborum placeat ut voluptates officiis exercitationem cumque vitae? Similique, aperiam perspiciatis? Blanditiis, distinctio! Totam dolorum, accusamus doloremque, pariatur iure, explicabo eligendi perspiciatis rerum harum alias beatae illo hic odio itaque corporis aut perferendis nulla. Mollitia quaerat nisi quasi?</p>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(3)">
+      <img src="8.jpg" alt="Card 3" />
+      <div class="card-body">
+        
+        <p>Deskripsi singkat ketiga</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gambar statis bawah -->
+  <div class="static-image bottom">
+    <img src="11.jpg" alt="Gambar Statis Bawah" />
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div id="modal-images"></div>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    const slideGroups = {
+    1: ["2.jpg", "3.jpg"],
+    2: ["4.jpg", "5.jpg", "6.jpg", "7.jpg"],
+    3: ["8.jpg", "9.jpg", "10.jpg"]
+    };
+
+    function openModal(cardId) {
+      const modal = document.getElementById("modal");
+      const container = document.getElementById("modal-images");
+      container.innerHTML = "";
+      slideGroups[cardId].forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        container.appendChild(img);
+      });
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
